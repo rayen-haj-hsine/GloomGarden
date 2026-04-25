@@ -38,6 +38,27 @@ public class GamePanel extends JPanel {
                 drawTile(g, t, x * TILE_SIZE, y * TILE_SIZE);
             }
         }
+        
+        if (game.isGameOver()) {
+            g.setColor(new Color(0, 0, 0, 180));
+            g.fillRect(0, 0, getWidth(), getHeight());
+            
+            g.setColor(Color.RED);
+            g.setFont(new Font("Arial", Font.BOLD, 48));
+            FontMetrics fm = g.getFontMetrics();
+            String msg = "GAME OVER";
+            int msgX = (getWidth() - fm.stringWidth(msg)) / 2;
+            int msgY = getHeight() / 2;
+            g.drawString(msg, msgX, msgY);
+            
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 24));
+            fm = g.getFontMetrics();
+            String subMsg = "Origin Plant Destroyed!";
+            int subMsgX = (getWidth() - fm.stringWidth(subMsg)) / 2;
+            int subMsgY = msgY + 40;
+            g.drawString(subMsg, subMsgX, subMsgY);
+        }
     }
 
     private void drawTile(Graphics g, Tile t, int px, int py) {

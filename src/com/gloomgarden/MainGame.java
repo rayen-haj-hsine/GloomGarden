@@ -8,23 +8,40 @@ public class MainGame {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("GloomGarden - Prototype");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setLayout(new BorderLayout());
+            
+            CardLayout cardLayout = new CardLayout();
+            JPanel mainPanel = new JPanel(cardLayout);
+            frame.setContentPane(mainPanel);
 
-            GameManager gameManager = new GameManager(20); // 20x20 grid
-            GamePanel gamePanel = new GamePanel(gameManager);
-            com.gloomgarden.UIManager uiManager = new com.gloomgarden.UIManager(gameManager, gamePanel);
+            MainMenuPanel menuPanel = new MainMenuPanel(() -> {
+                // Initialize game on start
+                GameManager gameManager = new GameManager(20); // 20x20 grid
+                GamePanel gamePanel = new GamePanel(gameManager);
+                com.gloomgarden.UIManager uiManager = new com.gloomgarden.UIManager(gameManager, gamePanel);
 
-            // Timer to update UI continuously based on game state changes outside direct actions if any
-            Timer timer = new Timer(100, e -> {
-                uiManager.updateUIState();
-                gamePanel.repaint();
+                JPanel gameContainer = new JPanel(new BorderLayout());
+                gameContainer.add(gamePanel, BorderLayout.CENTER);
+                gameContainer.add(uiManager, BorderLayout.SOUTH);
+
+                mainPanel.add(gameContainer, "GAME");
+                cardLayout.show(mainPanel, "GAME");
+                
+                // Set fixed size based on game panel
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+
+                // Timer to update UI continuously
+                Timer timer = new Timer(100, e -> {
+                    uiManager.updateUIState();
+                    gamePanel.repaint();
+                });
+                timer.start();
             });
-            timer.start();
 
-            frame.add(gamePanel, BorderLayout.CENTER);
-            frame.add(uiManager, BorderLayout.SOUTH);
+            mainPanel.add(menuPanel, "MENU");
+            cardLayout.show(mainPanel, "MENU");
 
-            frame.pack();
+            frame.setSize(800, 900); // Initial size for menu
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
