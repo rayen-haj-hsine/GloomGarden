@@ -59,7 +59,7 @@ public class TurnManager {
         cleanUpDeadPests(grid);
 
         // 4. Pests move & attack, and Spawning
-        if (turnCount >= 5) {
+        if (turnCount > 5) {
             List<Tile> spawnCandidates = new ArrayList<>();
             for (int x = 0; x < size; x++) {
                 for (int y = 0; y < size; y++) {
