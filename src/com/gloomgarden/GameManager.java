@@ -96,8 +96,6 @@ public class GameManager {
                 statusMessage = "Select an action below.";
                 break;
         }
-        
-        currentAction = PlayerAction.NONE; // Reset after click
     }
     
     private void plantAction(Tile tile, PlantType type) {

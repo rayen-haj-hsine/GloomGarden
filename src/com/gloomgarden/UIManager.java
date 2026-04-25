@@ -10,6 +10,12 @@ public class UIManager extends JPanel {
     private JLabel lblOriginHealth;
     private JLabel lblStatus;
 
+    private JButton btnExpand;
+    private JButton btnGen;
+    private JButton btnRose;
+    private JButton btnFlytrap;
+    private JButton btnIvy;
+
     public UIManager(GameManager game, GamePanel gamePanel) {
         this.game = game;
         this.gamePanel = gamePanel;
@@ -25,20 +31,20 @@ public class UIManager extends JPanel {
         JPanel actionPanel = new JPanel();
         actionPanel.setLayout(new GridLayout(2, 3, 5, 5));
         
-        JButton btnExpand = new JButton("Expand (5E)");
-        btnExpand.addActionListener(e -> setAction(GameManager.PlayerAction.EXPAND));
+        btnExpand = new JButton("Expand (5E)");
+        btnExpand.addActionListener(e -> toggleAction(GameManager.PlayerAction.EXPAND));
         
-        JButton btnGen = new JButton("Generator (10E)");
-        btnGen.addActionListener(e -> setAction(GameManager.PlayerAction.PLANT_GENERATOR));
+        btnGen = new JButton("Generator (10E)");
+        btnGen.addActionListener(e -> toggleAction(GameManager.PlayerAction.PLANT_GENERATOR));
         
-        JButton btnRose = new JButton("Rose (15E)");
-        btnRose.addActionListener(e -> setAction(GameManager.PlayerAction.PLANT_ROSE));
+        btnRose = new JButton("Rose (15E)");
+        btnRose.addActionListener(e -> toggleAction(GameManager.PlayerAction.PLANT_ROSE));
         
-        JButton btnFlytrap = new JButton("Flytrap (20E)");
-        btnFlytrap.addActionListener(e -> setAction(GameManager.PlayerAction.PLANT_FLYTRAP));
+        btnFlytrap = new JButton("Flytrap (20E)");
+        btnFlytrap.addActionListener(e -> toggleAction(GameManager.PlayerAction.PLANT_FLYTRAP));
         
-        JButton btnIvy = new JButton("Ivy (5E)");
-        btnIvy.addActionListener(e -> setAction(GameManager.PlayerAction.PLANT_IVY));
+        btnIvy = new JButton("Ivy (5E)");
+        btnIvy.addActionListener(e -> toggleAction(GameManager.PlayerAction.PLANT_IVY));
         
         JButton btnEndTurn = new JButton("End Turn");
         btnEndTurn.setBackground(new Color(200, 100, 100));
@@ -62,9 +68,14 @@ public class UIManager extends JPanel {
         add(lblStatus, BorderLayout.SOUTH);
     }
     
-    private void setAction(GameManager.PlayerAction action) {
-        game.setCurrentAction(action);
-        game.setStatusMessage("Action selected: " + action.name() + ". Click a tile.");
+    private void toggleAction(GameManager.PlayerAction action) {
+        if (game.getCurrentAction() == action) {
+            game.setCurrentAction(GameManager.PlayerAction.NONE);
+            game.setStatusMessage("Action deselected.");
+        } else {
+            game.setCurrentAction(action);
+            game.setStatusMessage("Action selected: " + action.name() + ". Click a tile.");
+        }
         updateUIState();
     }
 
@@ -72,5 +83,16 @@ public class UIManager extends JPanel {
         lblEnergy.setText("Energy: " + game.getEnergy());
         lblOriginHealth.setText("Origin HP: " + game.getOriginHealth());
         lblStatus.setText("Status: " + game.getStatusMessage());
+        
+        // Highlight active action
+        GameManager.PlayerAction current = game.getCurrentAction();
+        Color defaultColor = new JButton().getBackground();
+        Color activeColor = new Color(150, 200, 255);
+        
+        btnExpand.setBackground(current == GameManager.PlayerAction.EXPAND ? activeColor : defaultColor);
+        btnGen.setBackground(current == GameManager.PlayerAction.PLANT_GENERATOR ? activeColor : defaultColor);
+        btnRose.setBackground(current == GameManager.PlayerAction.PLANT_ROSE ? activeColor : defaultColor);
+        btnFlytrap.setBackground(current == GameManager.PlayerAction.PLANT_FLYTRAP ? activeColor : defaultColor);
+        btnIvy.setBackground(current == GameManager.PlayerAction.PLANT_IVY ? activeColor : defaultColor);
     }
 }

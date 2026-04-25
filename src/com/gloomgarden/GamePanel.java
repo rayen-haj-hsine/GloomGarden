@@ -74,9 +74,9 @@ public class GamePanel extends JPanel {
 
         // Draw plants
         if (!t.getPlants().isEmpty()) {
-            g.setColor(Color.YELLOW);
             for (int i = 0; i < t.getPlants().size(); i++) {
                 Plant p = t.getPlants().get(i);
+                g.setColor(p.getType().color);
                 int offX, offY;
                 if (t.getPlants().size() <= 3) {
                     offX = px + 5 + (i * 10);
@@ -90,7 +90,6 @@ public class GamePanel extends JPanel {
                 g.fillRect(offX, offY, 8, 8);
                 g.setColor(Color.WHITE);
                 g.drawString(p.getType().name.substring(0,1), offX+1, offY+8);
-                g.setColor(Color.YELLOW);
             }
         }
 
