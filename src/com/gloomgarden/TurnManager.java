@@ -17,14 +17,14 @@ public class TurnManager {
         int size = grid.getSize();
 
         // 1. Gain energy
-        int generatedEnergy = 0;
+        int generatedEnergy = 2; // Base energy per turn
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
                 Tile t = grid.getTile(x, y);
                 if (t.getState() == TileState.OWNED) {
                     for (Plant p : t.getPlants()) {
                         if (p.getType() == PlantType.GENERATOR) {
-                            generatedEnergy += 5;
+                            generatedEnergy += 10;
                         }
                     }
                 }
@@ -65,8 +65,8 @@ public class TurnManager {
                 Tile t = grid.getTile(x, y);
                 if ((t.getState() == TileState.LIT || t.getState() == TileState.INFESTED) && t.getState() != TileState.CLEARED) {
                     if (t.getDangerTimer() >= 3) {
-                        if (Math.random() < 0.3) {
-                            t.getPests().add(new Pest(10 + t.getDangerTimer() * 2));
+                        if (Math.random() < 0.1) { // Reduced spawn chance
+                            t.getPests().add(new Pest(5 + t.getDangerTimer())); // Weaker pests
                         }
                     }
                 }

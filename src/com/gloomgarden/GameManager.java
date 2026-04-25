@@ -18,7 +18,7 @@ public class GameManager {
     public GameManager(int gridSize) {
         gridManager = new GridManager(gridSize);
         turnManager = new TurnManager(this);
-        energy = 20; // Starting energy
+        energy = 30; // Starting energy
         originHealth = 100;
         gameOver = false;
         statusMessage = "Game Started! Origin plant placed.";
