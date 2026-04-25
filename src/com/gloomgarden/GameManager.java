@@ -27,6 +27,11 @@ public class GameManager {
         int center = gridSize / 2;
         Tile origin = gridManager.getTile(center, center);
         origin.setState(TileState.OWNED);
+        origin.setMaxPlants(9);
+        origin.addPlant(new Plant(PlantType.GENERATOR));
+        origin.addPlant(new Plant(PlantType.GENERATOR));
+        origin.addPlant(new Plant(PlantType.ROSE));
+        origin.addPlant(new Plant(PlantType.FLYTRAP));
         gridManager.updateLighting();
     }
 
@@ -105,7 +110,7 @@ public class GameManager {
                 statusMessage = "Planted " + type.name + ".";
             } else {
                 addEnergy(type.cost); // Refund
-                statusMessage = "Tile is full (max 3 plants).";
+                statusMessage = "Tile is full.";
             }
         } else {
             statusMessage = "Not enough energy for " + type.name + " (Cost: " + type.cost + ").";

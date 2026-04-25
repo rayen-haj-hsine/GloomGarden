@@ -77,8 +77,16 @@ public class GamePanel extends JPanel {
             g.setColor(Color.YELLOW);
             for (int i = 0; i < t.getPlants().size(); i++) {
                 Plant p = t.getPlants().get(i);
-                int offX = px + 5 + (i * 10);
-                int offY = py + 25;
+                int offX, offY;
+                if (t.getPlants().size() <= 3) {
+                    offX = px + 5 + (i * 10);
+                    offY = py + 25;
+                } else {
+                    int row = i / 3;
+                    int col = i % 3;
+                    offX = px + 4 + (col * 11);
+                    offY = py + 4 + (row * 11);
+                }
                 g.fillRect(offX, offY, 8, 8);
                 g.setColor(Color.WHITE);
                 g.drawString(p.getType().name.substring(0,1), offX+1, offY+8);

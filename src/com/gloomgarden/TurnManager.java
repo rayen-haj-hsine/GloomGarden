@@ -59,16 +59,23 @@ public class TurnManager {
         cleanUpDeadPests(grid);
 
         // 4. Pests move & attack, and Spawning
-        // Simple spawning based on danger
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
-                Tile t = grid.getTile(x, y);
-                if ((t.getState() == TileState.LIT || t.getState() == TileState.INFESTED) && t.getState() != TileState.CLEARED) {
-                    if (t.getDangerTimer() >= 3) {
-                        if (Math.random() < 0.1) { // Reduced spawn chance
-                            t.getPests().add(new Pest(5 + t.getDangerTimer())); // Weaker pests
+        if (turnCount >= 5) {
+            List<Tile> spawnCandidates = new ArrayList<>();
+            for (int x = 0; x < size; x++) {
+                for (int y = 0; y < size; y++) {
+                    Tile t = grid.getTile(x, y);
+                    if ((t.getState() == TileState.LIT || t.getState() == TileState.INFESTED) && t.getState() != TileState.CLEARED && t.getState() != TileState.OWNED) {
+                        if (t.getDangerTimer() >= 3) {
+                            spawnCandidates.add(t);
                         }
                     }
+                }
+            }
+            if (!spawnCandidates.isEmpty()) {
+                int numSpawns = 1 + (turnCount / 10);
+                for (int i = 0; i < numSpawns; i++) {
+                    Tile spawnTile = spawnCandidates.get((int)(Math.random() * spawnCandidates.size()));
+                    spawnTile.getPests().add(new Pest(5 + spawnTile.getDangerTimer()));
                 }
             }
         }
